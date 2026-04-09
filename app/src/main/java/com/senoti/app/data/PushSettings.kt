@@ -10,6 +10,8 @@ data class PushSettings(
     val eventName: String = "new-notification",
     val autoDeleteMinutes: Int = 2,
     val autoDeleteImmediately: Boolean = false,
+    val pushApiEnabled: Boolean = false,
+    val customApiUrl: String = BuildConfig.CUSTOM_API_URL,
 
     // Toggles for which data fields to include
     val sendAppName: Boolean = true,

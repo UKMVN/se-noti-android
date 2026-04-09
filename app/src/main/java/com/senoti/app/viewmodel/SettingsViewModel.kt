@@ -45,6 +45,14 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
         updateAndSave(_settings.value.copy(autoDeleteImmediately = enabled))
     }
 
+    fun updatePushApiEnabled(enabled: Boolean) {
+        updateAndSave(_settings.value.copy(pushApiEnabled = enabled))
+    }
+
+    fun updateCustomApiUrl(url: String) {
+        updateAndSave(_settings.value.copy(customApiUrl = url))
+    }
+
     fun updateSendAppName(send: Boolean) {
         updateAndSave(_settings.value.copy(sendAppName = send))
     }

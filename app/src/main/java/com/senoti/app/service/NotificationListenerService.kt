@@ -115,6 +115,24 @@ class NotificationListenerService : NotificationListenerService() {
                 Log.e(TAG, "Error during Ably push", e)
             }
 
+            // Push to custom API if enabled and save log
+            try {
+                if (settings.pushApiEnabled) {
+                    val apiResult = ApiPublisher.publish(entity, settings)
+                    val apiLogEntry = ApiPublisher.createLogEntry(apiResult, entity)
+                    val publishLogDao = app.database.publishLogDao()
+                    val cutoff = System.currentTimeMillis() - PUBLISH_LOG_RETENTION_MS
+                    publishLogDao.deleteOlderThan(cutoff)
+                    publishLogDao.insert(apiLogEntry)
+
+                    if (!apiResult.isSuccess) {
+                        Log.e(TAG, "Custom API push failed: ${apiResult.errorMessage}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error during custom API push", e)
+            }
+
             if (isClearable) {
                 if (settings.autoDeleteImmediately) {
                     try {

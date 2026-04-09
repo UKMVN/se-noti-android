@@ -89,7 +89,12 @@ fun SettingsScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // ===== ENABLE/DISABLE SECTION =====
+            // ===== DESTINATIONS SECTION (ABLY + CUSTOM API) =====
+            item {
+                SectionHeader("Destinations")
+            }
+
+            // Push to Ably
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -141,11 +146,6 @@ fun SettingsScreen(
                 }
             }
 
-            // ===== ABLY CONFIG SECTION =====
-            item {
-                SectionHeader("Ably Configuration")
-            }
-
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -193,6 +193,70 @@ fun SettingsScreen(
                             leadingIcon = {
                                 Icon(Icons.Default.Tag, contentDescription = null)
                             },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
+                }
+            }
+
+            // Push to Custom API (same level as Ably)
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (settings.pushApiEnabled)
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = if (settings.pushApiEnabled) Icons.Default.Cloud else Icons.Default.CloudOff,
+                                contentDescription = null,
+                                tint = if (settings.pushApiEnabled) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Push to Custom API",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Text(
+                                    text = "Send notification data to your backend API endpoint",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = settings.pushApiEnabled,
+                                onCheckedChange = viewModel::updatePushApiEnabled,
+                                colors = SwitchDefaults.colors(
+                                    checkedTrackColor = MaterialTheme.colorScheme.primary
+                                )
+                            )
+                        }
+
+                        // API URL line – view & edit
+                        OutlinedTextField(
+                            value = settings.customApiUrl,
+                            onValueChange = viewModel::updateCustomApiUrl,
+                            label = { Text("API URL") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp)

@@ -5,6 +5,14 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+val defaultChannelName = providers.gradleProperty("SE_NOTI_DEFAULT_CHANNEL_NAME").orElse("sell6868").get()
+val defaultClientId = providers.gradleProperty("SE_NOTI_DEFAULT_CLIENT_ID").orElse("SE-APP").get()
+val defaultCustomerIdValue = providers.gradleProperty("SE_NOTI_DEFAULT_CUSTOMER_ID_VALUE").orElse("SE2029").get()
+val ablyApiKey = providers.gradleProperty("SE_NOTI_ABLY_API_KEY").orElse("").get()
+val customApiUrl = providers.gradleProperty("SE_NOTI_CUSTOM_API_URL").orElse("").get()
+val defaultPushEnabled = providers.gradleProperty("SE_NOTI_DEFAULT_PUSH_ABLY_ENABLED").orElse("true").get().toBoolean()
+val defaultPushApiEnabled = providers.gradleProperty("SE_NOTI_DEFAULT_PUSH_API_ENABLED").orElse("false").get().toBoolean()
+
 android {
     namespace = "com.senoti.app"
     compileSdk = 35
@@ -14,13 +22,17 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0.1"
-        buildConfigField("String", "DEFAULT_CHANNEL_NAME", "\"will6868\"")
-        buildConfigField("String", "DEFAULT_CLIENT_ID", "\"SE-APP\"")
-        buildConfigField("String", "DEFAULT_CUSTOMER_ID_VALUE", "\"SE2029\"")
-        buildConfigField("String", "ABLY_API_KEY", "\"lUyPUA.nmXh1A:8Cn23EhlVidxoB_45qIP4L41NqbWf8a9e4tKdZ2ZN4s\"")
+        versionName = "1.0.2"
+        buildConfigField("String", "DEFAULT_CHANNEL_NAME", "\"$defaultChannelName\"")
+        buildConfigField("String", "DEFAULT_CLIENT_ID", "\"$defaultClientId\"")
+        buildConfigField("String", "DEFAULT_CUSTOMER_ID_VALUE", "\"$defaultCustomerIdValue\"")
+        buildConfigField("String", "ABLY_API_KEY", "\"$ablyApiKey\"")
+        buildConfigField("String", "CUSTOM_API_URL", "\"$customApiUrl\"")
+        buildConfigField("boolean", "DEFAULT_PUSH_ENABLED", defaultPushEnabled.toString())
+        buildConfigField("boolean", "DEFAULT_PUSH_API_ENABLED", defaultPushApiEnabled.toString())
     }
 
+    
     buildTypes {
         release {
             isMinifyEnabled = false
