@@ -18,6 +18,7 @@ android {
         buildConfigField("String", "DEFAULT_CHANNEL_NAME", "\"will6868\"")
         buildConfigField("String", "DEFAULT_CLIENT_ID", "\"SE-APP\"")
         buildConfigField("String", "DEFAULT_CUSTOMER_ID_VALUE", "\"SE2029\"")
+        buildConfigField("String", "ABLY_API_KEY", "\"lUyPUA.nmXh1A:8Cn23EhlVidxoB_45qIP4L41NqbWf8a9e4tKdZ2ZN4s\"")
     }
 
     buildTypes {

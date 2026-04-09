@@ -1,8 +1,10 @@
 package com.senoti.app.data
 
+import com.senoti.app.BuildConfig
+
 data class PushSettings(
     val isEnabled: Boolean = true,
-    val ablyApiKey: String = "lUyPUA.nmXh1A:8Cn23EhlVidxoB_45qIP4L41NqbWf8a9e4tKdZ2ZN4s",
+    val ablyApiKey: String = BuildConfig.ABLY_API_KEY,
     val clientId: String = "",
     val channelName: String = "notifications",
     val eventName: String = "new-notification",
