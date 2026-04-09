@@ -201,6 +201,68 @@ fun SettingsScreen(
                 }
             }
 
+            // ===== NOTIFICATION CLEANUP SECTION =====
+            item {
+                SectionHeader("Notification Cleanup")
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Auto remove incoming notifications from the system tray. Turn on immediate delete, or set a delay in minutes.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Delete immediately",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                Text(
+                                    text = "Remove notification as soon as it is received",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = settings.autoDeleteImmediately,
+                                onCheckedChange = viewModel::updateAutoDeleteImmediately
+                            )
+                        }
+                        OutlinedTextField(
+                            value = settings.autoDeleteMinutes.takeIf { it > 0 }?.toString().orEmpty(),
+                            onValueChange = { raw ->
+                                val digitsOnly = raw.filter { it.isDigit() }
+                                viewModel.updateAutoDeleteMinutes(digitsOnly)
+                            },
+                            label = { Text("Auto delete after (minutes)") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            singleLine = true,
+                            enabled = !settings.autoDeleteImmediately,
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
+                }
+            }
+
             // ===== DATA FIELDS SECTION =====
             item {
                 SectionHeader("Included Data")

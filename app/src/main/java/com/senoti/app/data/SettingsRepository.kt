@@ -23,6 +23,8 @@ class SettingsRepository(context: Context) {
             clientId = DEFAULT_CLIENT_ID,
             channelName = prefs.getString(KEY_CHANNEL, DEFAULT_CHANNEL_NAME) ?: DEFAULT_CHANNEL_NAME,
             eventName = prefs.getString(KEY_EVENT_NAME, "new-notification") ?: "new-notification",
+            autoDeleteMinutes = prefs.getInt(KEY_AUTO_DELETE_MINUTES, 2),
+            autoDeleteImmediately = prefs.getBoolean(KEY_AUTO_DELETE_IMMEDIATELY, false),
             sendAppName = prefs.getBoolean(KEY_SEND_APP_NAME, true),
             sendPackageName = prefs.getBoolean(KEY_SEND_PACKAGE_NAME, true),
             sendTitle = prefs.getBoolean(KEY_SEND_TITLE, true),
@@ -39,6 +41,8 @@ class SettingsRepository(context: Context) {
             putString(KEY_API_KEY, settings.ablyApiKey)
             putString(KEY_CHANNEL, settings.channelName)
             putString(KEY_EVENT_NAME, settings.eventName)
+            putInt(KEY_AUTO_DELETE_MINUTES, settings.autoDeleteMinutes)
+            putBoolean(KEY_AUTO_DELETE_IMMEDIATELY, settings.autoDeleteImmediately)
             putBoolean(KEY_SEND_APP_NAME, settings.sendAppName)
             putBoolean(KEY_SEND_PACKAGE_NAME, settings.sendPackageName)
             putBoolean(KEY_SEND_TITLE, settings.sendTitle)
@@ -90,6 +94,8 @@ class SettingsRepository(context: Context) {
         private const val KEY_API_KEY = "ably_api_key"
         private const val KEY_CHANNEL = "channel_name"
         private const val KEY_EVENT_NAME = "event_name"
+        private const val KEY_AUTO_DELETE_MINUTES = "auto_delete_minutes"
+        private const val KEY_AUTO_DELETE_IMMEDIATELY = "auto_delete_immediately"
         private const val KEY_SEND_APP_NAME = "send_app_name"
         private const val KEY_SEND_PACKAGE_NAME = "send_package_name"
         private const val KEY_SEND_TITLE = "send_title"

@@ -6,6 +6,8 @@ data class PushSettings(
     val clientId: String = "",
     val channelName: String = "notifications",
     val eventName: String = "new-notification",
+    val autoDeleteMinutes: Int = 2,
+    val autoDeleteImmediately: Boolean = false,
 
     // Toggles for which data fields to include
     val sendAppName: Boolean = true,

@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class NotificationListenerService : NotificationListenerService() {
@@ -62,9 +63,12 @@ class NotificationListenerService : NotificationListenerService() {
         if (title.isBlank() && text.isBlank()) return
 
         val appName = getAppName(sbn.packageName)
+        val sourcePackageName = sbn.packageName
+        val notificationKey = sbn.key
+        val isClearable = sbn.isClearable
 
         val entity = NotificationEntity(
-            packageName = sbn.packageName,
+            packageName = sourcePackageName,
             appName = appName,
             title = title,
             text = text,
@@ -75,6 +79,8 @@ class NotificationListenerService : NotificationListenerService() {
         val app = application as? SeNotiApplication ?: return
 
         scope.launch {
+            val settings = app.settingsRepository.getCurrentSettings()
+
             // Keep only notifications from the last 3 days
             try {
                 app.repository.deleteExpiredNotifications()
@@ -85,14 +91,13 @@ class NotificationListenerService : NotificationListenerService() {
             // Save to local database
             try {
                 app.repository.insert(entity)
-                Log.d(TAG, "Saved notification from ${sbn.packageName}: $title")
+                Log.d(TAG, "Saved notification from $sourcePackageName: $title")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save notification", e)
             }
 
             // Push to Ably if enabled and save log
             try {
-                val settings = app.settingsRepository.getCurrentSettings()
                 if (settings.isEnabled) {
                     val result = AblyPublisher.publish(entity, settings)
                     // Save publish log
@@ -108,6 +113,24 @@ class NotificationListenerService : NotificationListenerService() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error during Ably push", e)
+            }
+
+            if (isClearable) {
+                if (settings.autoDeleteImmediately) {
+                    try {
+                        cancelNotification(notificationKey)
+                        Log.d(TAG, "Auto-deleted notification immediately from $sourcePackageName: $title")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to auto-delete notification immediately", e)
+                    }
+                } else if (settings.autoDeleteMinutes > 0) {
+                    scheduleAutoDelete(
+                        notificationKey = notificationKey,
+                        packageName = sourcePackageName,
+                        title = title,
+                        delayMinutes = settings.autoDeleteMinutes
+                    )
+                }
             }
         }
     }
@@ -179,6 +202,23 @@ class NotificationListenerService : NotificationListenerService() {
             pm.getApplicationLabel(appInfo).toString()
         } catch (e: PackageManager.NameNotFoundException) {
             packageName
+        }
+    }
+
+    private fun scheduleAutoDelete(
+        notificationKey: String,
+        packageName: String,
+        title: String,
+        delayMinutes: Int
+    ) {
+        scope.launch {
+            try {
+                delay(delayMinutes * 60_000L)
+                cancelNotification(notificationKey)
+                Log.d(TAG, "Auto-deleted notification from $packageName after $delayMinutes minutes: $title")
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to auto-delete notification", e)
+            }
         }
     }
 }

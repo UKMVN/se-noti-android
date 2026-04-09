@@ -36,6 +36,15 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
         updateAndSave(_settings.value.copy(eventName = eventName))
     }
 
+    fun updateAutoDeleteMinutes(minutesInput: String) {
+        val minutes = minutesInput.toIntOrNull()?.coerceAtLeast(0) ?: 0
+        updateAndSave(_settings.value.copy(autoDeleteMinutes = minutes))
+    }
+
+    fun updateAutoDeleteImmediately(enabled: Boolean) {
+        updateAndSave(_settings.value.copy(autoDeleteImmediately = enabled))
+    }
+
     fun updateSendAppName(send: Boolean) {
         updateAndSave(_settings.value.copy(sendAppName = send))
     }

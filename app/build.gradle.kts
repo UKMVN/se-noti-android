@@ -14,8 +14,8 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0.0"
-        buildConfigField("String", "DEFAULT_CHANNEL_NAME", "\"benj6868\"")
+        versionName = "1.0.1"
+        buildConfigField("String", "DEFAULT_CHANNEL_NAME", "\"will6868\"")
         buildConfigField("String", "DEFAULT_CLIENT_ID", "\"SE-APP\"")
         buildConfigField("String", "DEFAULT_CUSTOMER_ID_VALUE", "\"SE2029\"")
     }
