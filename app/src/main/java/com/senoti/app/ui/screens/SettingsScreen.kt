@@ -68,6 +68,7 @@ fun SettingsScreen(
     var editingFieldNewValue by remember { mutableStateOf("") }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text("Push Settings") },
@@ -77,7 +78,7 @@ fun SettingsScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         }
@@ -101,9 +102,9 @@ fun SettingsScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = if (settings.isEnabled)
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                            MaterialTheme.colorScheme.surface
                         else
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
                     )
                 ) {
                     Row(
@@ -208,9 +209,9 @@ fun SettingsScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = if (settings.pushApiEnabled)
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
+                            MaterialTheme.colorScheme.surface
                         else
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f)
                     )
                 ) {
                     Column(
@@ -422,7 +423,7 @@ fun SettingsScreen(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+                        containerColor = MaterialTheme.colorScheme.surface
                         )
                     ) {
                         Row(

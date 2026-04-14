@@ -2,54 +2,64 @@ package com.senoti.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// Expo-inspired neutrals
+val ExpoBlack = Color(0xFF000000)
+val NearBlack = Color(0xFF1C2024)
+val CloudGray = Color(0xFFF0F0F3)
+val PureWhite = Color(0xFFFFFFFF)
+val SlateGray = Color(0xFF60646C)
+val BorderLavender = Color(0xFFE0E1E6)
+val InputBorder = Color(0xFFD9D9E0)
+val DestructiveRose = Color(0xFFEB8E90)
+
 // Light Theme Colors
-val PrimaryLight = Color(0xFF1565C0)
-val OnPrimaryLight = Color(0xFFFFFFFF)
-val PrimaryContainerLight = Color(0xFFD1E4FF)
-val OnPrimaryContainerLight = Color(0xFF001D36)
+val PrimaryLight = ExpoBlack
+val OnPrimaryLight = PureWhite
+val PrimaryContainerLight = PureWhite
+val OnPrimaryContainerLight = NearBlack
 
-val SecondaryLight = Color(0xFF535F70)
-val OnSecondaryLight = Color(0xFFFFFFFF)
-val SecondaryContainerLight = Color(0xFFD7E3F8)
-val OnSecondaryContainerLight = Color(0xFF101C2B)
+val SecondaryLight = NearBlack
+val OnSecondaryLight = PureWhite
+val SecondaryContainerLight = CloudGray
+val OnSecondaryContainerLight = NearBlack
 
-val TertiaryLight = Color(0xFF6B5778)
-val OnTertiaryLight = Color(0xFFFFFFFF)
-val TertiaryContainerLight = Color(0xFFF3DAFF)
-val OnTertiaryContainerLight = Color(0xFF251431)
+val TertiaryLight = SlateGray
+val OnTertiaryLight = PureWhite
+val TertiaryContainerLight = CloudGray
+val OnTertiaryContainerLight = NearBlack
 
-val ErrorLight = Color(0xFFBA1A1A)
-val OnErrorLight = Color(0xFFFFFFFF)
+val ErrorLight = DestructiveRose
+val OnErrorLight = ExpoBlack
 
-val BackgroundLight = Color(0xFFF8F9FF)
-val OnBackgroundLight = Color(0xFF191C20)
-val SurfaceLight = Color(0xFFF8F9FF)
-val OnSurfaceLight = Color(0xFF191C20)
-val SurfaceVariantLight = Color(0xFFDFE2EB)
-val OnSurfaceVariantLight = Color(0xFF43474E)
+val BackgroundLight = CloudGray
+val OnBackgroundLight = NearBlack
+val SurfaceLight = PureWhite
+val OnSurfaceLight = NearBlack
+val SurfaceVariantLight = CloudGray
+val OnSurfaceVariantLight = SlateGray
 
 // Dark Theme Colors
-val PrimaryDark = Color(0xFF9ECAFF)
-val OnPrimaryDark = Color(0xFF003258)
-val PrimaryContainerDark = Color(0xFF00497D)
-val OnPrimaryContainerDark = Color(0xFFD1E4FF)
+val PrimaryDark = PureWhite
+val OnPrimaryDark = ExpoBlack
+val PrimaryContainerDark = Color(0xFF1A1A1A)
+val OnPrimaryContainerDark = Color(0xFFE2E2E9)
 
-val SecondaryDark = Color(0xFFBBC7DB)
-val OnSecondaryDark = Color(0xFF253140)
-val SecondaryContainerDark = Color(0xFF3B4858)
-val OnSecondaryContainerDark = Color(0xFFD7E3F8)
+val SecondaryDark = Color(0xFFB0B4BA)
+val OnSecondaryDark = ExpoBlack
+val SecondaryContainerDark = Color(0xFF333333)
+val OnSecondaryContainerDark = Color(0xFFE2E2E9)
 
-val TertiaryDark = Color(0xFFD7BEE4)
-val OnTertiaryDark = Color(0xFF3B2948)
-val TertiaryContainerDark = Color(0xFF523F5F)
-val OnTertiaryContainerDark = Color(0xFFF3DAFF)
+val TertiaryDark = Color(0xFFB0B4BA)
+val OnTertiaryDark = ExpoBlack
+val TertiaryContainerDark = Color(0xFF333333)
+val OnTertiaryContainerDark = Color(0xFFE2E2E9)
 
-val ErrorDark = Color(0xFFFFB4AB)
-val OnErrorDark = Color(0xFF690005)
+val ErrorDark = Color(0xFFEB8E90)
+val OnErrorDark = ExpoBlack
 
-val BackgroundDark = Color(0xFF111318)
+val BackgroundDark = Color(0xFF171717)
 val OnBackgroundDark = Color(0xFFE2E2E9)
-val SurfaceDark = Color(0xFF111318)
+val SurfaceDark = Color(0xFF1A1A1A)
 val OnSurfaceDark = Color(0xFFE2E2E9)
-val SurfaceVariantDark = Color(0xFF43474E)
-val OnSurfaceVariantDark = Color(0xFFC3C6CF)
+val SurfaceVariantDark = Color(0xFF333333)
+val OnSurfaceVariantDark = Color(0xFFB0B4BA)

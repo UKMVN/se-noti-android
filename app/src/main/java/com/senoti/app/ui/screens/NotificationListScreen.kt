@@ -4,6 +4,8 @@ import android.text.format.DateUtils
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,6 +66,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -88,6 +91,7 @@ fun NotificationListScreen(
     var showDeleteAllDialog by remember { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = {
@@ -99,9 +103,9 @@ fun NotificationListScreen(
                         if (unreadCount > 0) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Badge(
-                                containerColor = MaterialTheme.colorScheme.error
+                                containerColor = MaterialTheme.colorScheme.primary
                             ) {
-                                Text("$unreadCount")
+                                Text("$unreadCount", color = MaterialTheme.colorScheme.onPrimary)
                             }
                         }
                     }
@@ -155,7 +159,7 @@ fun NotificationListScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = Color.Transparent
                 )
             )
         }
@@ -193,6 +197,7 @@ fun NotificationListScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(24.dp))
                 ) { }
             }
 
@@ -209,7 +214,8 @@ fun NotificationListScreen(
                             onClick = { viewModel.onAppSelected(null) },
                             label = { Text("All") },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer
+                                selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                             )
                         )
                     }
@@ -219,7 +225,8 @@ fun NotificationListScreen(
                             onClick = { viewModel.onAppSelected(appInfo.packageName) },
                             label = { Text(appInfo.appName) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer
+                                selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                             )
                         )
                     }
@@ -232,7 +239,7 @@ fun NotificationListScreen(
             } else {
                 LazyColumn(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(
@@ -303,14 +310,14 @@ fun SwipeToDeleteNotificationItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.errorContainer)
+                    .background(MaterialTheme.colorScheme.error.copy(alpha = 0.22f))
                     .padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
                     Icons.Default.Delete,
                     contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.onErrorContainer
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         },
@@ -334,15 +341,19 @@ fun NotificationItem(
             .fillMaxWidth()
             .animateContentSize()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant
+        ),
         colors = CardDefaults.cardColors(
             containerColor = if (!notification.isRead)
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.surface
             else
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (!notification.isRead) 2.dp else 0.dp
+            defaultElevation = if (!notification.isRead) 4.dp else 1.dp
         )
     ) {
         Row(
@@ -356,13 +367,13 @@ fun NotificationItem(
                 modifier = Modifier
                     .size(44.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = notification.appName.take(1).uppercase(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -378,7 +389,7 @@ fun NotificationItem(
                     Text(
                         text = notification.appName,
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
