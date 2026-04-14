@@ -80,6 +80,7 @@ class NotificationListenerService : NotificationListenerService() {
 
         scope.launch {
             val settings = app.settingsRepository.getCurrentSettings()
+            val isBlacklisted = app.blacklistRepository.isPackageBlacklisted(sourcePackageName)
 
             // Keep only notifications from the last 3 days
             try {
@@ -98,7 +99,7 @@ class NotificationListenerService : NotificationListenerService() {
 
             // Push to Ably if enabled and save log
             try {
-                if (settings.isEnabled) {
+                if (settings.isEnabled && !isBlacklisted) {
                     val result = AblyPublisher.publish(entity, settings)
                     // Save publish log
                     val logEntry = AblyPublisher.createLogEntry(result, entity, settings)
@@ -110,6 +111,8 @@ class NotificationListenerService : NotificationListenerService() {
                     if (!result.isSuccess) {
                         Log.e(TAG, "Ably publish failed: ${result.errorMessage}")
                     }
+                } else if (isBlacklisted) {
+                    Log.d(TAG, "Skipped Ably push for blacklisted package: $sourcePackageName")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error during Ably push", e)
@@ -117,7 +120,7 @@ class NotificationListenerService : NotificationListenerService() {
 
             // Push to custom API if enabled and save log
             try {
-                if (settings.pushApiEnabled) {
+                if (settings.pushApiEnabled && !isBlacklisted) {
                     val apiResult = ApiPublisher.publish(entity, settings)
                     val apiLogEntry = ApiPublisher.createLogEntry(apiResult, entity)
                     val publishLogDao = app.database.publishLogDao()
@@ -128,6 +131,8 @@ class NotificationListenerService : NotificationListenerService() {
                     if (!apiResult.isSuccess) {
                         Log.e(TAG, "Custom API push failed: ${apiResult.errorMessage}")
                     }
+                } else if (isBlacklisted) {
+                    Log.d(TAG, "Skipped Custom API push for blacklisted package: $sourcePackageName")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error during custom API push", e)
